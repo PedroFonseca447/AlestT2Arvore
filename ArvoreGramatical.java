@@ -1,5 +1,7 @@
 import java.util.LinkedList;
-
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 public class ArvoreGramatical{
     public int count;
 
@@ -154,32 +156,24 @@ public class ArvoreGramatical{
             }
             return false;
         }
-        public LinkedList<String> consultar(String conjuntoCaracteres) {
-            LinkedList<String> palavrasEncontradas = new LinkedList<>();
-            consultarRecursivo(conjuntoCaracteres, "", root, palavrasEncontradas);
-            return palavrasEncontradas;
+      
+       
+    public void geraDot(String nomeArquivo) {
+        try (PrintWriter out = new PrintWriter(new FileWriter(nomeArquivo))) {
+            out.println("digraph ArvoreGramatical {");
+            geraDotRecursivo(root, out);
+            out.println("}");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        
-        private void consultarRecursivo(String conjuntoCaracteres, String palavraAtual, Nodo nodoAtual, LinkedList<String> palavrasEncontradas) {
-            // Verifica se chegou ao final do conjunto de caracteres
-            if (conjuntoCaracteres.isEmpty()) {
-                // Se o nodo atual é um nodo final de palavra, adiciona a palavra atual à lista de palavras encontradas
-                if (nodoAtual.palavra != null) {
-                    palavrasEncontradas.add(palavraAtual);
-                }
-                return;
-            }
-            
-            char proximoCaractere = conjuntoCaracteres.charAt(0);
-            String restanteCaracteres = conjuntoCaracteres.substring(1);
-        
-            // Verifica se o caractere atual está presente nos filhos do nodo atual
-            for (Nodo filho : nodoAtual.subtree) {
-                if (filho.palavra.charAt(0) == proximoCaractere) {
-                    // Se encontrou uma correspondência, faz uma chamada recursiva para o filho
-                    String novaPalavraAtual = palavraAtual + filho.palavra;
-                    consultarRecursivo(restanteCaracteres, novaPalavraAtual, filho, palavrasEncontradas);
-                }
-            }
+    }
+
+    private void geraDotRecursivo(Nodo nodo, PrintWriter out) {
+        out.println("\t\"" + nodo.palavra + "\";");
+
+        for (Nodo filho : nodo.subtree) {
+            out.println("\t\"" + nodo.palavra + "\" -> \"" + filho.palavra + "\";");
+            geraDotRecursivo(filho, out);
         }
+    }
 }
