@@ -10,11 +10,37 @@ import java.util.LinkedList;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        LinkedList<Palavra> lista = new LinkedList<>();
+        LinkedList<Palavra> lista = new LinkedList<Palavra>();
         ArvoreGramatical a = new ArvoreGramatical();
         String aux[];
-        a.add("/",null);       
-        Path path1 = Paths.get("novo.csv");
+        a.add("/",null);
+        a.add("A","/");
+        a.add("B","/");
+        a.add("C","/");
+        a.add("D","/");
+        a.add("E","/");
+        a.add("F","/");
+        a.add("G","/");
+        a.add("H","/");
+        a.add("I","/");
+        a.add("J","/");
+        a.add("K","/");
+        a.add("L","/");
+        a.add("M","/");
+        a.add("N","/");
+        a.add("O","/");
+        a.add("P","/");
+        a.add("Q","/");
+        a.add("R","/");
+        a.add("S","/");
+        a.add("T","/");
+        a.add("U","/");
+        a.add("V","/");
+        a.add("W","/");
+        a.add("X","/");
+        a.add("Y","/");
+        a.add("Z","/");
+        Path path1 = Paths.get("dicionario.csv");
 
         System.out.println("\n" + path1.toString());
       
@@ -27,7 +53,7 @@ public class App {
                   a.add(p, "/");  
                
                     lista.add(p);
-                    
+                   
                   
                 }
                 line = reader.readLine();
@@ -35,9 +61,19 @@ public class App {
         } catch (IOException e) {
             System.err.format("Erro na leitura do arquivo: ", e);
         }  
-       System.out.println("Lista de palavras e seus significados" + lista);
-      System.out.println(a.possitionsPre());
-    
+        //assim posso isolar so as palavras e os significados nao ficando tudo
+        //junto e misturado
+
+        for(int i=0;i<lista.size();i++){
+            Palavra novoAux = lista.get(i);
+            String ant = novoAux.getPalavra();
+             if(ant==a.possitionsPre().get(i)){
+                System.out.println(ant);
+             }
+          //  System.out.println(ant);
+        }
+    // System.out.println(a.possitionsPre());
+     //   System.out.println(a.count);
       a.geraDot("arvore.dot");
     }
  

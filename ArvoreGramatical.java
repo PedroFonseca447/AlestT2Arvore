@@ -10,7 +10,7 @@ public class ArvoreGramatical{
         public Nodo father;
 
         public String palavra;
-
+        public String significado;
         public LinkedList<Nodo> subtree;
         //para adicionar depois de ja ter feito o root
         public Nodo(String p,Nodo pai){
@@ -122,6 +122,8 @@ public class ArvoreGramatical{
             }
     
             // Percorre cada caractere da palavra
+            //antes criar uma forma de ser o ultimo elemento da palavra
+            //e setar um null para parar de percorrer
             Nodo nodoPai = ref;
             for (int i = 0; i < palavraStr.length(); i++) {
                 String letra = Character.toString(palavraStr.charAt(i));

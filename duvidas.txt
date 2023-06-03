@@ -1,0 +1,9 @@
+tirar o ponto de ? do dicionario.csv
+perguntar se a estrutura da arvore é a ideal
+
+antes na classe nodo, implementar uma forma de identificar que é o final de uma
+palavra(sugestão usar o ; para saber que é o fim)
+
+quero percorrer a lista de palavras e a arvore
+para comparar as estruturas e identificar as palavras 
+depois disso 
