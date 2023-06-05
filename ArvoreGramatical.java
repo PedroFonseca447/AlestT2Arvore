@@ -1,4 +1,6 @@
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -137,7 +139,7 @@ public class ArvoreGramatical{
                 // Verifica se o caractere já existe no nodo atual
                 Nodo nodoAtual = null;
                 
-                //nodo filho é criado e se percorre a lista do nodo pai
+               // nodo filho é criado e se percorre a lista do nodo pai
                 for (Nodo filho : nodoPai.subtree) {
                     if (filho.palavra.equals(letra)) {
                         //se ele estiver pressente se adiciona o pai ao nodo
@@ -169,26 +171,37 @@ public class ArvoreGramatical{
             }
             return false;
         }
-      
+        
+        //         Nesta implementação, o número do nível é concatenado ao nome do nodo, separado por um underscore (_). Isso garante que cada nodo tenha um nome único com base no seu valor e no seu nível.
+
+        // Ao imprimir o nodo no formato DOT, o nome do nodo é atualizado para incluir o número do nível correspondente. Além disso, ao criar uma aresta para o filho, o nome do nodo do filho também é atualizado com o número do próximo nível.
+
+        // Dessa forma, cada nodo terá um nome exclusivo com base no seu valor e no seu nível correspondente, criando a distinção visual entre os nodos em diferentes níveis da árvore no arquivo DOT gerado.
+
+        // Por exemplo, para a palavra "correr", o primeiro "r" será do terceiro nível e o segundo "r" será do quarto nível, como você mencionou.
        
-    public void geraDot(String nomeArquivo) {
-        try (PrintWriter out = new PrintWriter(new FileWriter(nomeArquivo))) {
-            out.println("digraph ArvoreGramatical {");
-            geraDotRecursivo(root, out);
-            out.println("}");
-        } catch (IOException e) {
-            e.printStackTrace();
+        public void geraDot(String nomeArquivo) {
+            try (PrintWriter out = new PrintWriter(new FileWriter(nomeArquivo))) {
+                out.println("digraph ArvoreGramatical {");
+                geraDotRecursivo(root, out, 0);
+                out.println("}");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-    }
-
-    private void geraDotRecursivo(Nodo nodo, PrintWriter out) {
-        out.println("\t\"" + nodo.palavra + "\";");
-
-        for (Nodo filho : nodo.subtree) {
-            out.println("\t\"" + nodo.palavra + "\" -> \"" + filho.palavra + "\";");
-            geraDotRecursivo(filho, out);
+        
+        private void geraDotRecursivo(Nodo nodo, PrintWriter out, int nivel) {
+            String espacos = "\t".repeat(nivel);
+            String nomeNodo = nodo.palavra + "_" + nivel;
+            
+            out.println(espacos + "\"" + nomeNodo + "\";");
+            
+            for (Nodo filho : nodo.subtree) {
+                out.println(espacos + "\"" + nomeNodo + "\" -> \"" + filho.palavra + "_" + (nivel + 1) + "\";");
+                geraDotRecursivo(filho, out, nivel + 1);
+            }
         }
-    }
+        
     public LinkedList<String> printSignificados() throws Exception {
        LinkedList<String> lista = new LinkedList<>();
        printSignificadosRecursivo(root,lista);

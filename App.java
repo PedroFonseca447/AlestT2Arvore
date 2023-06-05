@@ -67,14 +67,15 @@ public class App {
             String ant = novoAux.getPalavra();
             String jux = novoAux.getSignificado();
              if(ant==a.printSignificados().get(i)){
-                System.out.println(ant);
+           //     System.out.println(ant);
              }
-            System.out.println(ant+"\n Significado: "+jux);
+         //   System.out.println(ant+"\n Significado: "+jux);
         }
    
      
      //   System.out.println(a.count);
       a.geraDot("arvore.dot");
+      
     }
  
 }
