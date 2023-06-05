@@ -4,36 +4,42 @@ import java.io.IOException;
 import java.io.PrintWriter;
 public class ArvoreGramatical{
     public int count;
-
-    private class Nodo{
-
+    public class Nodo {
         public Nodo father;
-
         public String palavra;
         public String significado;
         public LinkedList<Nodo> subtree;
-        //para adicionar depois de ja ter feito o root
-        public Nodo(String p,Nodo pai){
-            palavra=p;
-            father=pai;
+    
+        public Nodo(String p, Nodo pai, String sgn) {
+            palavra = p;
+            father = pai;
             subtree = new LinkedList<>();
+            significado = sgn;
         }
-        //para criar o primeiro nodo
-        public Nodo(String p){
-            palavra=p;
-            father=null;
+    
+        public Nodo(String p) {
+            palavra = p;
+            father = null;
             subtree = new LinkedList<>();
+            significado = null;
         }
-        public void addSubtree(Nodo entrada){
+    
+        public void addSubtree(Nodo entrada) {
             subtree.add(entrada);
-
-            entrada.father=this;
+            entrada.father = this;
         }
-        public int getSubtreeSize(){
+    
+        public int getSubtreeSize() {
             return subtree.size();
         }
-        public Nodo getSubtree(int i) throws Exception{
-            if(i<0 || i>subtree.size()){
+    
+        public void setSignificado(String p) {
+            significado = p;
+        }
+    
+    
+        public Nodo getSubtree(int i) throws Exception {
+            if (i < 0 || i >= subtree.size()) {
                 throw new IndexOutOfBoundsException();
             }
             return subtree.get(i);
@@ -130,6 +136,7 @@ public class ArvoreGramatical{
     
                 // Verifica se o caractere já existe no nodo atual
                 Nodo nodoAtual = null;
+                
                 //nodo filho é criado e se percorre a lista do nodo pai
                 for (Nodo filho : nodoPai.subtree) {
                     if (filho.palavra.equals(letra)) {
@@ -141,10 +148,14 @@ public class ArvoreGramatical{
     
                 // Se o caractere não existe, cria um novo nodo e adiciona ao nodo atual
                 if (nodoAtual == null) {
-                    nodoAtual = new Nodo(letra, nodoPai);
+                    nodoAtual = new Nodo(letra, nodoPai,null);
+                    if(palavraStr.length()==i+1){
+                        nodoAtual.setSignificado(palavraStr);
+                        }
                     nodoPai.addSubtree(nodoAtual);
-                    count++;
+                    count++;                   
                 }
+                       
     
                 nodoPai = nodoAtual; // Atualiza o nodo pai para o próximo caractere
             }
@@ -177,5 +188,22 @@ public class ArvoreGramatical{
             out.println("\t\"" + nodo.palavra + "\" -> \"" + filho.palavra + "\";");
             geraDotRecursivo(filho, out);
         }
+    }
+    public LinkedList<String> printSignificados() throws Exception {
+       LinkedList<String> lista = new LinkedList<>();
+       printSignificadosRecursivo(root,lista);
+       return lista;
+
+    }
+    
+    private void printSignificadosRecursivo(Nodo aux,LinkedList<String> lista) throws Exception {
+        if(aux!=null){
+            //em tese primeiro visitaria o nodo pai
+            lista.add(aux.significado);
+            //depois visitaria o filho usando os aux para saber se viu
+            for(int i=0;i<aux.getSubtreeSize();i++){
+                printSignificadosRecursivo(aux.getSubtree(i), lista);
+            }
+           }
     }
 }

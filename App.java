@@ -40,7 +40,7 @@ public class App {
         a.add("X","/");
         a.add("Y","/");
         a.add("Z","/");
-        Path path1 = Paths.get("dicionario.csv");
+        Path path1 = Paths.get("novo.csv");
 
         System.out.println("\n" + path1.toString());
       
@@ -50,10 +50,9 @@ public class App {
                     if(line.length()>0) { 
                     aux = line.split(";");
                     Palavra p = new Palavra(aux[0],aux[1]);
-                  a.add(p, "/");  
-               
-                    lista.add(p);
-                   
+                         a.add(p, "/");  
+                         lista.add(p);
+                         
                   
                 }
                 line = reader.readLine();
@@ -63,16 +62,17 @@ public class App {
         }  
         //assim posso isolar so as palavras e os significados nao ficando tudo
         //junto e misturado
-
         for(int i=0;i<lista.size();i++){
             Palavra novoAux = lista.get(i);
             String ant = novoAux.getPalavra();
-             if(ant==a.possitionsPre().get(i)){
+            String jux = novoAux.getSignificado();
+             if(ant==a.printSignificados().get(i)){
                 System.out.println(ant);
              }
-          //  System.out.println(ant);
+            System.out.println(ant+"\n Significado: "+jux);
         }
-    // System.out.println(a.possitionsPre());
+   
+     
      //   System.out.println(a.count);
       a.geraDot("arvore.dot");
     }
