@@ -6,12 +6,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 public class ArvoreGramatical{
     public int count;
-    
     public class Nodo {
-        private Nodo father;
-        private String palavra;
-        private String significado;
-        private LinkedList<Nodo> subtree;
+        public Nodo father;
+        public String palavra;
+        public String significado;
+        public LinkedList<Nodo> subtree;
     
         public Nodo(String p, Nodo pai, String sgn) {
             palavra = p;
@@ -20,24 +19,17 @@ public class ArvoreGramatical{
             significado = sgn;
         }
     
+       
+    
         public void addSubtree(Nodo entrada) {
-            if (entrada.father != null) {
-                entrada.father.removeSubtree(entrada);
-            }
             subtree.add(entrada);
             entrada.father = this;
-        }
-    
-        public void removeSubtree(Nodo entrada) {
-            subtree.remove(entrada);
-            entrada.father = null;
         }
     
         public int getSubtreeSize() {
             return subtree.size();
         }
-    
-        public String getSignificado() {
+        public String getSignificado(){
             return significado;
         }
     
@@ -45,18 +37,18 @@ public class ArvoreGramatical{
             significado = p;
         }
     
-        public Nodo getSubtree(int i) throws IndexOutOfBoundsException {
+    
+        public Nodo getSubtree(int i) throws Exception {
             if (i < 0 || i >= subtree.size()) {
                 throw new IndexOutOfBoundsException();
             }
             return subtree.get(i);
         }
-    
+
         public String getPalavra() {
             return palavra;
         }
     }
-    
          public Nodo root;
 
         public ArvoreGramatical(){
@@ -102,18 +94,22 @@ public class ArvoreGramatical{
         public void add(Palavra palavra, String pai) {
             String palavraStr = palavra.getPalavra();
             Nodo ref = null;
-    
-            // Verifica se o pai é nulo
-            if (pai == null) {
-                ref = root;
-                count++;
-            } else {
-                ref = searchNode(pai, root);
-            }
-    
-            if (ref == null) {
-                return;
-            }
+                
+                    // Verifica se o pai é nulo
+                if (pai == null) {
+                    if (root == null) {
+                        root = new Nodo("/", null, null); // Cria o nó raiz
+                        count++;
+                    }
+                    ref = root;
+                } else {
+                    ref = searchNode(pai, root);
+                }
+
+                if (ref == null) {
+                    return;
+                }
+
     
             // Percorre cada caractere da palavra
             //antes criar uma forma de ser o ultimo elemento da palavra
@@ -166,8 +162,11 @@ public class ArvoreGramatical{
                 e.printStackTrace();
             }
         }
-        
         private void geraDotRecursivo(Nodo nodo, PrintWriter out, int nivel) {
+            if (nodo == null) {
+                return;
+            }
+            
             String espacos = "";
             for (int i = 0; i < nivel; i++) {
                 espacos += "\t";
@@ -177,10 +176,13 @@ public class ArvoreGramatical{
             out.println(espacos + "\"" + nomeNodo + "\";");
             
             for (Nodo filho : nodo.subtree) {
-                out.println(espacos + "\"" + nomeNodo + "\" -> \"" + filho.palavra + "_" + (nivel + 1) + "\";");
-                geraDotRecursivo(filho, out, nivel + 1);
+                if (filho != null) { // Verifica se o filho não é nulo
+                    out.println(espacos + "\"" + nomeNodo + "\" -> \"" + filho.palavra + "_" + (nivel + 1) + "\";");
+                    geraDotRecursivo(filho, out, nivel + 1);
+                }
             }
         }
+        
            
     public LinkedList<String> printSignificados() throws Exception {
        LinkedList<String> lista = new LinkedList<>();
