@@ -34,6 +34,9 @@ public class ArvoreGramatical{
         public int getSubtreeSize() {
             return subtree.size();
         }
+        public String getSignificado(){
+            return significado;
+        }
     
         public void setSignificado(String p) {
             significado = p;
@@ -45,6 +48,10 @@ public class ArvoreGramatical{
                 throw new IndexOutOfBoundsException();
             }
             return subtree.get(i);
+        }
+
+        public String getPalavra() {
+            return palavra;
         }
     }
          public Nodo root;
@@ -162,17 +169,8 @@ public class ArvoreGramatical{
                 nodoPai = nodoAtual; // Atualiza o nodo pai para o próximo caractere
             }
 }
-
-        public boolean isExternal(String palavra){
-            Nodo per = searchNode(palavra, root);
-
-            if(per.getSubtreeSize()==0){
-                return true;
-            }
-            return false;
-        }
-        
-        //         Nesta implementação, o número do nível é concatenado ao nome do nodo, separado por um underscore (_). Isso garante que cada nodo tenha um nome único com base no seu valor e no seu nível.
+     
+         //         Nesta implementação, o número do nível é concatenado ao nome do nodo, separado por um underscore (_). Isso garante que cada nodo tenha um nome único com base no seu valor e no seu nível.
 
         // Ao imprimir o nodo no formato DOT, o nome do nodo é atualizado para incluir o número do nível correspondente. Além disso, ao criar uma aresta para o filho, o nome do nodo do filho também é atualizado com o número do próximo nível.
 
@@ -191,7 +189,10 @@ public class ArvoreGramatical{
         }
         
         private void geraDotRecursivo(Nodo nodo, PrintWriter out, int nivel) {
-            String espacos = "\t".repeat(nivel);
+            String espacos = "";
+            for (int i = 0; i < nivel; i++) {
+                espacos += "\t";
+            }
             String nomeNodo = nodo.palavra + "_" + nivel;
             
             out.println(espacos + "\"" + nomeNodo + "\";");
@@ -201,7 +202,7 @@ public class ArvoreGramatical{
                 geraDotRecursivo(filho, out, nivel + 1);
             }
         }
-        
+           
     public LinkedList<String> printSignificados() throws Exception {
        LinkedList<String> lista = new LinkedList<>();
        printSignificadosRecursivo(root,lista);
@@ -219,4 +220,74 @@ public class ArvoreGramatical{
             }
            }
     }
+    // public LinkedList<String> procuraPalavras(String pesquisa){
+    //     LinkedList lista = new LinkedList<>();
+    //     Nodo aux = auxprocuraPalavras(pesquisa, root);
+    //     juntaSignificados(aux, lista);
+    //     return lista;
+    // }
+    // private Nodo auxprocuraPalavras(String pesquisa, Nodo aux){
+    //     for(int i =0; i<pesquisa.length();i++){
+    //         String letra = Character.toString(pesquisa.charAt(i));
+
+    //         for(Nodo filho : aux.subtree){
+    //             if(filho.getPalavra().equals(letra)){
+    //                 return auxprocuraPalavras(letra,filho);
+    //             }
+    //         }
+    //     }
+    //     return null;
+    // }
+    // private void juntaSignificados(Nodo aux, LinkedList<String> palavras){
+    //     if(aux==null){
+    //         return;
+    //     }
+
+    //     if(aux.getSignificado()!=null){
+    //         palavras.add(aux.getSignificado());
+
+    //     }
+
+    //     for(Nodo filho : aux.subtree){
+    //         juntaSignificados(aux, palavras);
+    //     }
+    // }
+    public LinkedList<String> findWordsWithPrefix(String prefix) {
+        LinkedList<String> words = new LinkedList<>();
+        Nodo lastPrefixNode = getLastPrefixNode(prefix, root);
+        collectWordsFromNode(lastPrefixNode, words);
+        return words;
+    }
+    
+    private Nodo getLastPrefixNode(String prefix, Nodo node) {
+        if (node == null || prefix.isEmpty()) {
+            return node;
+        }
+    
+        String firstChar = prefix.substring(0, 1);
+        String remainingPrefix = prefix.substring(1);
+    
+        for (Nodo child : node.subtree) {
+            if (child.getPalavra().equals(firstChar)) {
+                return getLastPrefixNode(remainingPrefix, child);
+            }
+        }
+    
+        return null;
+    }
+    
+    private void collectWordsFromNode(Nodo node, LinkedList<String> words) {
+        if (node == null) {
+            return;
+        }
+    
+        if (node.getSignificado() != null) {
+            words.add(node.getSignificado());
+        }
+    
+        for (Nodo child : node.subtree) {
+            collectWordsFromNode(child, words);
+        }
+    }
+    
 }

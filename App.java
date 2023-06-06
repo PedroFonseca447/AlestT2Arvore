@@ -71,11 +71,13 @@ public class App {
              }
          //   System.out.println(ant+"\n Significado: "+jux);
         }
-   
+        System.out.println(a.printSignificados());
      
      //   System.out.println(a.count);
       a.geraDot("arvore.dot");
-      
+            LinkedList<String> wordsWithPrefix = a.findWordsWithPrefix("Ab");
+        System.out.println("Palavras com prefixo 'ab': " + wordsWithPrefix);
+
     }
  
 }
