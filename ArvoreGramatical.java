@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 public class ArvoreGramatical{
     public int count;
+    
     public class Nodo {
-        public Nodo father;
-        public String palavra;
-        public String significado;
-        public LinkedList<Nodo> subtree;
+        private Nodo father;
+        private String palavra;
+        private String significado;
+        private LinkedList<Nodo> subtree;
     
         public Nodo(String p, Nodo pai, String sgn) {
             palavra = p;
@@ -19,22 +20,24 @@ public class ArvoreGramatical{
             significado = sgn;
         }
     
-        public Nodo(String p) {
-            palavra = p;
-            father = null;
-            subtree = new LinkedList<>();
-            significado = null;
-        }
-    
         public void addSubtree(Nodo entrada) {
+            if (entrada.father != null) {
+                entrada.father.removeSubtree(entrada);
+            }
             subtree.add(entrada);
             entrada.father = this;
+        }
+    
+        public void removeSubtree(Nodo entrada) {
+            subtree.remove(entrada);
+            entrada.father = null;
         }
     
         public int getSubtreeSize() {
             return subtree.size();
         }
-        public String getSignificado(){
+    
+        public String getSignificado() {
             return significado;
         }
     
@@ -42,18 +45,18 @@ public class ArvoreGramatical{
             significado = p;
         }
     
-    
-        public Nodo getSubtree(int i) throws Exception {
+        public Nodo getSubtree(int i) throws IndexOutOfBoundsException {
             if (i < 0 || i >= subtree.size()) {
                 throw new IndexOutOfBoundsException();
             }
             return subtree.get(i);
         }
-
+    
         public String getPalavra() {
             return palavra;
         }
     }
+    
          public Nodo root;
 
         public ArvoreGramatical(){
@@ -61,31 +64,7 @@ public class ArvoreGramatical{
             this.root=null;
         }
 
-        public boolean add(String letra,String pai){
-            Nodo aux = new Nodo(letra);
-            
-            if(pai==null){
-                if(root==null){
-                    root=aux;
-                    count++;
-                    return true ;
-                }
-                else
-                return false;
-            }
-            Nodo ref = searchNode(pai, root);
-
-            if(ref==null){
-                return false;
-            }
-            //faz o nodo apontar para o pai
-            aux.father=ref;
-            //adciona o nodo e faz o pai apontar para o filho em sua lista
-            ref.addSubtree(aux);
-            count++;
-            return true;
-            
-        }
+       
         public LinkedList<String> possitionsPre() throws Exception {
             LinkedList<String> lista = new LinkedList<>();
             possitionsPre(root, lista);
