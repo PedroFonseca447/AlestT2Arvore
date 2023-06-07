@@ -49,7 +49,7 @@ public class App {
             while (line != null) {
                     if(line.length()>0) { 
                     aux = line.split(";");
-                    Palavra p = new Palavra(aux[0],aux[1]);
+                    Palavra p = new Palavra(aux[0].toLowerCase(),aux[1]);
                          a.addPalavra(p, "/");  
                          lista.add(p);
                          
@@ -62,7 +62,7 @@ public class App {
         }  
         //assim posso isolar so as palavras e os significados nao ficando tudo
         //junto e misturado
-        LinkedList<String> wordsWithPrefix = a.findWordsWithPrefix("Diss");
+        LinkedList<String> wordsWithPrefix = a.findWordsWithPrefix("diss");
         for(int i=0;i<lista.size();i++){
             Palavra novoAux = lista.get(i);
             String ant = novoAux.getPalavra();
@@ -74,7 +74,7 @@ public class App {
             }
        //   System.out.println(ant+"\n Significado: "+jux);
         }
-       // System.out.println(a.printSignificados());
+        System.out.println(a.possitionsPre());
      
      //   System.out.println(a.count);
       a.geraDot("arvore.dot");
