@@ -14,7 +14,7 @@ public class App {
         ArvoreGramatical a = new ArvoreGramatical();
         String aux[];
         
-        a.add("/",null);
+        a.addRoot("/");
         // a.add("B","/");
         // a.add("C","/");
         // a.add("D","/");
@@ -50,7 +50,11 @@ public class App {
                     if(line.length()>0) { 
                     aux = line.split(";");
                     Palavra p = new Palavra(aux[0],aux[1]);
-                         a.addPalavra(p, "/");  
+                    String palavraApoio = p.getPalavra();
+
+                        a.addPalavra(p, "/");  
+                    
+                        
                          lista.add(p);
                          
                   
@@ -62,25 +66,25 @@ public class App {
         }  
         //assim posso isolar so as palavras e os significados nao ficando tudo
         //junto e misturado
-        LinkedList<String> wordsWithPrefix = a.findWordsWithPrefix("Diss");
-        for(int i=0;i<lista.size();i++){
-            Palavra novoAux = lista.get(i);
-            String ant = novoAux.getPalavra();
-            String jux = novoAux.getSignificado();
-            for(int j=0; j< wordsWithPrefix.size();j++){
-                if(ant==wordsWithPrefix.get(j)){
-                    System.out.println(ant+":"+jux);
-                }
-            }
-       //   System.out.println(ant+"\n Significado: "+jux);
-        }
-       // System.out.println(a.printSignificados());
+    //     LinkedList<String> wordsWithPrefix = a.findWordsWithPrefix("Diss");
+    //     for(int i=0;i<lista.size();i++){
+    //         Palavra novoAux = lista.get(i);
+    //         String ant = novoAux.getPalavra();
+    //         String jux = novoAux.getSignificado();
+    //         for(int j=0; j< wordsWithPrefix.size();j++){
+    //             if(ant==wordsWithPrefix.get(j)){
+    //                 System.out.println(ant+":"+jux);
+    //             }
+    //         }
+    //    //   System.out.println(ant+"\n Significado: "+jux);
+    //     }
+    //     System.out.println(a.possitionsPre());
      
-     //   System.out.println(a.count);
-      a.geraDot("arvore.dot");
+    //  //   System.out.println(a.count);
+    //   a.geraDot("arvore.dot");
       //varrer as 2 listas comparar as palavras e pegar o significado
         System.out.println(a.count);
 
-    }
+     }
  
 }
