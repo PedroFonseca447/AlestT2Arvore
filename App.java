@@ -14,7 +14,7 @@ public class App {
         ArvoreGramatical a = new ArvoreGramatical();
         String aux[];
         
-        // a.add("A","/");
+        a.add("/",null);
         // a.add("B","/");
         // a.add("C","/");
         // a.add("D","/");
@@ -50,7 +50,7 @@ public class App {
                     if(line.length()>0) { 
                     aux = line.split(";");
                     Palavra p = new Palavra(aux[0],aux[1]);
-                         a.add(p, "/");  
+                         a.addPalavra(p, "/");  
                          lista.add(p);
                          
                   
@@ -72,7 +72,7 @@ public class App {
                     System.out.println(ant+":"+jux);
                 }
             }
-         //   System.out.println(ant+"\n Significado: "+jux);
+       //   System.out.println(ant+"\n Significado: "+jux);
         }
        // System.out.println(a.printSignificados());
      
