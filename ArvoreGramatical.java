@@ -6,20 +6,29 @@ import java.io.IOException;
 import java.io.PrintWriter;
 public class ArvoreGramatical{
     public int count;
+    public int ax;
     public class Nodo {
         public Nodo father;
         public String palavra;
         public String significado;
+        public Integer dif;
         public LinkedList<Nodo> subtree;
     
         public Nodo(String p, Nodo pai, String sgn) {
             palavra = p;
             father = pai;
+            
             subtree = new LinkedList<>();
             significado = sgn;
         }
     
-       
+        public Nodo(String p) {
+            palavra = p;
+            father = null;
+            subtree = new LinkedList<>();
+            significado = null;
+            
+        }
     
         public void addSubtree(Nodo entrada) {
             subtree.add(entrada);
@@ -56,7 +65,31 @@ public class ArvoreGramatical{
             this.root=null;
         }
 
-       
+        public boolean add(String letra,String pai){
+            Nodo aux = new Nodo(letra);
+            
+            if(pai==null){
+                if(root==null){
+                    root=aux;
+                    count++;
+                    return true ;
+                }
+                else
+                return false;
+            }
+            Nodo ref = searchNode(pai, root);
+
+            if(ref==null){
+                return false;
+            }
+            //faz o nodo apontar para o pai
+            aux.father=ref;
+            //adciona o nodo e faz o pai apontar para o filho em sua lista
+            ref.addSubtree(aux);
+            count++;
+            return true;
+            
+        }
         public LinkedList<String> possitionsPre() throws Exception {
             LinkedList<String> lista = new LinkedList<>();
             possitionsPre(root, lista);
@@ -94,22 +127,18 @@ public class ArvoreGramatical{
         public void add(Palavra palavra, String pai) {
             String palavraStr = palavra.getPalavra();
             Nodo ref = null;
-                
-                    // Verifica se o pai é nulo
-                if (pai == null) {
-                    if (root == null) {
-                        root = new Nodo("/", null, null); // Cria o nó raiz
-                        count++;
-                    }
-                    ref = root;
-                } else {
-                    ref = searchNode(pai, root);
-                }
-
-                if (ref == null) {
-                    return;
-                }
-
+    
+            // Verifica se o pai é nulo
+            if (pai == null) {
+                ref = root;
+                count++;
+            } else {
+                ref = searchNode(pai, root);
+            }
+    
+            if (ref == null) {
+                return;
+            }
     
             // Percorre cada caractere da palavra
             //antes criar uma forma de ser o ultimo elemento da palavra
@@ -121,7 +150,7 @@ public class ArvoreGramatical{
                 // Verifica se o caractere já existe no nodo atual
                 Nodo nodoAtual = null;
                 
-               // nodo filho é criado e se percorre a lista do nodo pai
+               //nodo filho é criado e se percorre a lista do nodo pai
                 for (Nodo filho : nodoPai.subtree) {
                     if (filho.palavra.equals(letra)) {
                         //se ele estiver pressente se adiciona o pai ao nodo
@@ -137,7 +166,9 @@ public class ArvoreGramatical{
                         nodoAtual.setSignificado(palavraStr);
                         }
                     nodoPai.addSubtree(nodoAtual);
-                    count++;                   
+                    nodoAtual.father=nodoPai;
+                    count++;
+                                
                 }
                        
     
@@ -162,27 +193,23 @@ public class ArvoreGramatical{
                 e.printStackTrace();
             }
         }
+        
         private void geraDotRecursivo(Nodo nodo, PrintWriter out, int nivel) {
-            if (nodo == null) {
-                return;
-            }
-            
             String espacos = "";
             for (int i = 0; i < nivel; i++) {
                 espacos += "\t";
             }
-            String nomeNodo = nodo.palavra + "_" + nivel;
+            
+            String nomeNodo = nodo.palavra + "_" + count;
+            count++;
             
             out.println(espacos + "\"" + nomeNodo + "\";");
             
             for (Nodo filho : nodo.subtree) {
-                if (filho != null) { // Verifica se o filho não é nulo
-                    out.println(espacos + "\"" + nomeNodo + "\" -> \"" + filho.palavra + "_" + (nivel + 1) + "\";");
-                    geraDotRecursivo(filho, out, nivel + 1);
-                }
+                out.println(espacos + "\"" + nomeNodo + "\" -> \""+ filho.palavra + "_" + count + "\";");
+                geraDotRecursivo(filho, out, nivel + 1);
             }
         }
-        
            
     public LinkedList<String> printSignificados() throws Exception {
        LinkedList<String> lista = new LinkedList<>();
