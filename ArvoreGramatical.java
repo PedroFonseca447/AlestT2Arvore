@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 public class ArvoreGramatical{
     public int count;
+    public int ajuda;
     public class Nodo {
         public Nodo father;
         public String palavra;
@@ -186,12 +187,14 @@ public class ArvoreGramatical{
             for (int i = 0; i < nivel; i++) {
                 espacos += "\t";
             }
-            String nomeNodo = nodo.palavra + "_" + nivel;
+            
+            String nomeNodo = nodo.palavra + "_" + ajuda;
+            ajuda++;
             
             out.println(espacos + "\"" + nomeNodo + "\";");
             
             for (Nodo filho : nodo.subtree) {
-                out.println(espacos + "\"" + nomeNodo + "\" -> \"" + filho.palavra + "_" + (nivel + 1) + "\";");
+                out.println(espacos + "\"" + nomeNodo + "\" -> \""+ filho.palavra + "_" + ajuda + "\";");
                 geraDotRecursivo(filho, out, nivel + 1);
             }
         }
