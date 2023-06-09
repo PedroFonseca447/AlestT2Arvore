@@ -255,32 +255,27 @@ public class ArvoreGramatical{
             collectWordsFromNode(child, words);
         }
     }
-            public LinkedList<String> percorrerArvorePalavras(ArvoreGramatical arvore) {
-            LinkedList<String> palavras = new LinkedList<>();
-            percorrerArvorePalavrasRecursivo(arvore.root, "", palavras, false);
-            return palavras;
-        }
-
-        private void percorrerArvorePalavrasRecursivo(ArvoreGramatical.Nodo nodo, String palavraAtual, LinkedList<String> palavras, boolean ignoreRaiz) {
-            // Verifica se o nodo atual é a raiz e se deve ser ignorado
-            if (ignoreRaiz && nodo == null) {
-                return;
+                    public LinkedList<String> buscarPalavras(ArvoreGramatical arvore, String caracteres) {
+                LinkedList<String> palavrasEncontradas = new LinkedList<>();
+                buscarPalavrasRecursivo(arvore.root, caracteres, "", palavrasEncontradas);
+                return palavrasEncontradas;
             }
-            
-            // Concatena a palavra atual com a letra do nodo, exceto para a raiz "/"
-            String novaPalavra = (ignoreRaiz && nodo == null) ? palavraAtual : palavraAtual + nodo.palavra;
 
-            // Verifica se o nodo atual forma uma palavra completa e não contém "/"
-            if (nodo != null && nodo.getSignificado() != null && !nodo.getPalavra().equals("/")) {
-                palavras.add(novaPalavra);
-            }
-            
-            // Percorre os nodos filhos
-            if (nodo != null) {
+            private void buscarPalavrasRecursivo(ArvoreGramatical.Nodo nodo, String caracteres, String prefixo, LinkedList<String> palavrasEncontradas) {
+                if (nodo == null ) {
+                    return;
+                }
+                
+                // Verifica se o prefixo atual mais a letra do nodo forma a sequência de caracteres desejada
+                String novaPalavra = prefixo + nodo.palavra;
+                if (novaPalavra.startsWith(caracteres)&&nodo.significado!=null) {
+                    palavrasEncontradas.add(novaPalavra);
+                }
+                
+                // Percorre os nodos filhos
                 for (ArvoreGramatical.Nodo filho : nodo.subtree) {
-                    percorrerArvorePalavrasRecursivo(filho, novaPalavra, palavras, true);
+                    buscarPalavrasRecursivo(filho, caracteres, novaPalavra, palavrasEncontradas);
                 }
             }
-        }
 
 }

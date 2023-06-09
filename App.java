@@ -42,12 +42,10 @@ public class App {
         //assim posso isolar so as palavras e os significados nao ficando tudo
         //junto e misturado
         LinkedList<String> listaArvore = a.findWordsWithPrefix(ids);
-        LinkedList<String> la = a.percorrerArvorePalavras(a);
+        LinkedList<String> la = a.buscarPalavras(a,"/"+ids);
         LinkedList<String> nla = new LinkedList<>();
-        
         pularPrimeiroCaractere(la,nla);
-        
-
+  
         for(int i=0;i<nla.size();i++){
             System.out.println(nla.get(i));
         }
