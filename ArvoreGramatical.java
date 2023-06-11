@@ -255,27 +255,50 @@ public class ArvoreGramatical{
             collectWordsFromNode(child, words);
         }
     }
-                    public LinkedList<String> buscarPalavras(ArvoreGramatical arvore, String caracteres) {
-                LinkedList<String> palavrasEncontradas = new LinkedList<>();
-                buscarPalavrasRecursivo(arvore.root, caracteres, "", palavrasEncontradas);
-                return palavrasEncontradas;
-            }
+    public LinkedList<String> buscarPalavras(ArvoreGramatical arvore, String caracteres) {
+        LinkedList<String> palavrasEncontradas = new LinkedList<>();
+        buscarPalavrasRecursivo(arvore.root, caracteres, "", palavrasEncontradas);
+        return palavrasEncontradas;
+    }
 
-            private void buscarPalavrasRecursivo(ArvoreGramatical.Nodo nodo, String caracteres, String prefixo, LinkedList<String> palavrasEncontradas) {
-                if (nodo == null ) {
-                    return;
-                }
+    private void buscarPalavrasRecursivo(ArvoreGramatical.Nodo nodo, String caracteres, String prefixo, LinkedList<String> palavrasEncontradas) {
+        if (nodo == null ) {
+             return;
+        }
                 
-                // Verifica se o prefixo atual mais a letra do nodo forma a sequência de caracteres desejada
-                String novaPalavra = prefixo + nodo.palavra;
-                if (novaPalavra.startsWith(caracteres)&&nodo.significado!=null) {
-                    palavrasEncontradas.add(novaPalavra);
-                }
+    // Verifica se o prefixo atual mais a letra do nodo forma a sequência de caracteres desejada
+        String novaPalavra = prefixo + nodo.palavra;
+          if (novaPalavra.startsWith(caracteres)&&nodo.significado!=null) {
+                palavrasEncontradas.add(novaPalavra);
+            }
                 
                 // Percorre os nodos filhos
                 for (ArvoreGramatical.Nodo filho : nodo.subtree) {
                     buscarPalavrasRecursivo(filho, caracteres, novaPalavra, palavrasEncontradas);
                 }
             }
+      public LinkedList<String> bucasSignificado(ArvoreGramatical arvore, String caracteres) {
+        LinkedList<String> palavrasEncontradas = new LinkedList<>();
+        bucasSignificadoRecursivo(arvore.root, caracteres, "", palavrasEncontradas);
+        return palavrasEncontradas;
+    }
 
+   private void bucasSignificadoRecursivo(ArvoreGramatical.Nodo nodo, String caracteres, String prefixo, LinkedList<String> palavrasEncontradas) {
+    if (nodo == null ) {
+         return;
+    }
+            
+    // Verifica se o prefixo atual mais a letra do nodo forma a sequência de caracteres desejada
+    String novaPalavra = prefixo + nodo.palavra;
+    String significado = nodo.getSignificado();
+    
+    if (novaPalavra.startsWith(caracteres) && significado != null) {
+        palavrasEncontradas.add(significado);
+    }
+    
+    // Percorre os nodos filhos
+    for (ArvoreGramatical.Nodo filho : nodo.subtree) {
+        bucasSignificadoRecursivo(filho, caracteres, novaPalavra, palavrasEncontradas);
+    }
+}        
 }

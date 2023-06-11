@@ -19,7 +19,7 @@ public class App {
        
         a.add("/",null);
        
-        Path path1 = Paths.get("novo.csv");
+        Path path1 = Paths.get("dicionario.csv");
 
         System.out.println("\n" + path1.toString());
       
@@ -41,35 +41,34 @@ public class App {
         }  
         //assim posso isolar so as palavras e os significados nao ficando tudo
         //junto e misturado
-        LinkedList<String> listaArvore = a.findWordsWithPrefix(ids);
+       
         LinkedList<String> la = a.buscarPalavras(a,"/"+ids);
         LinkedList<String> nla = new LinkedList<>();
+
+
         pularPrimeiroCaractere(la,nla);
   
-        for(int i=0;i<nla.size();i++){
-            System.out.println(nla.get(i));
+        for(int i=0;i<la.size();i++){
+            System.out.println(la.get(i));
         }
-        // for(int i=0;i<lista.size();i++){
-        //     Palavra novoAux = lista.get(i);
-        //     String ant = novoAux.getPalavra();
-        //     for(int j=0; j< listaArvore.size();j++){
-        //         if(ant==listaArvore.get(j)){
-        //             System.out.println("ant");
-        //         }
-        //     }
+      
+        System.out.println(" digite os caracteres");
+        String ntd = in.nextLine();
+        LinkedList<String> sgn = a.bucasSignificado(a, "/"+ntd);
+        LinkedList<String> nsgn = new LinkedList<>();
 
-        // }
-            
-        //pensa em alg
-       // System.out.println(" digite a palavra que voce quer que seja ");
-        
-       //String jids = in.nextLine();
-        //faz escolher selecionando numero e posição bem na caruda mesmo
-        //System.out.println(a.printSignificados());
- 
-     //   System.out.println(a.count);
+        pularPrimeiroCaractere(sgn, nsgn);
+
+       System.out.println(nsgn.size());
+
+       for(int i=0;i<nsgn.size();i++){
+        System.out.println(nsgn.get(i));
+       }
+
       a.geraDot("arvore.dot");
       //varrer as 2 listas comparar as palavras e pegar o significado
+
+     // System.out.println(a.printSignificados());
        
 
     }
