@@ -18,7 +18,7 @@ public class App {
         ArvoreGramatical a = new ArvoreGramatical();
         String aux[];
        
-        a.add("/",null);
+        a.addRoot("/",null);
        
         Path path1 = Paths.get("dicionario.csv");
 
@@ -46,20 +46,20 @@ public class App {
         }  
         //assim posso isolar so as palavras e os significados nao ficando tudo
         //junto e misturado
-       
-        LinkedList<String> la = a.buscarPalavras(a,"/"+ids);
+
+        LinkedList<String> la = a.buscarPalavras("/"+ids);
         LinkedList<String> nla = new LinkedList<>();
 
 
         pularPrimeiroCaractere(la,nla);
   
-        for(int i=0;i<la.size();i++){
-            System.out.println(la.get(i));
+        for(int i=0;i<nla.size();i++){
+            System.out.println(nla.get(i));
         }
       
         System.out.println(" digite os caracteres");
         String ntd = in.nextLine();
-        LinkedList<String> sgn = a.bucasSignificado(a, "/"+ntd);
+        LinkedList<String> sgn = a.bucasSignificado( "/"+ntd);
        
         //pularPrimeiroCaractere(sgn, nsgn);
 
