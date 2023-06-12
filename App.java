@@ -29,6 +29,10 @@ public class App {
             while (line != null) {
                     if(line.length()>0) { 
                     aux = line.split(";");
+                    if(lista.size()==0) {
+                        aux[0] = aux[0].substring(1);
+                        
+                    }
                     Palavra p = new Palavra(aux[0].toLowerCase(),aux[1]);
                          a.addPalavra(p, "/");  
                          lista.add(p);
