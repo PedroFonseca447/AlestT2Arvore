@@ -1,4 +1,5 @@
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -6,13 +7,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
-
+import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        Scanner in = new Scanner(System.in);
+        System.out.println(" digite os caracteres");
+        String ids = in.nextLine();
         LinkedList<Palavra> lista = new LinkedList<Palavra>();
         ArvoreGramatical a = new ArvoreGramatical();
         String aux[];
+       
         a.add("/",null);
        
         Path path1 = Paths.get("dicionario.csv");
@@ -21,13 +26,11 @@ public class App {
       
         try (BufferedReader reader = Files.newBufferedReader(path1, Charset.forName("UTF-8"))) {// Charset.defaultCharset())
             String line = reader.readLine();
-            Integer apoio=0;
             while (line != null) {
                     if(line.length()>0) { 
                     aux = line.split(";");
                     Palavra p = new Palavra(aux[0].toLowerCase(),aux[1]);
-                         a.add(p, "/");
-                         apoio++;  
+                         a.addPalavra(p, "/");  
                          lista.add(p);
                          
                   
@@ -39,26 +42,42 @@ public class App {
         }  
         //assim posso isolar so as palavras e os significados nao ficando tudo
         //junto e misturado
-        LinkedList<String> wordsWithPrefix = a.findWordsWithPrefix("car");
-        for(int i=0;i<lista.size();i++){
-            Palavra novoAux = lista.get(i);
-            String ant = novoAux.getPalavra();
-            String jux = novoAux.getSignificado();
-            for(int j=0; j< wordsWithPrefix.size();j++){
-                if(ant==wordsWithPrefix.get(j)){
-                    System.out.println(ant+" : "+jux);
-                }
-            }
-         //   System.out.println(ant+"\n Significado: "+jux);
+       
+        LinkedList<String> la = a.buscarPalavras(a,"/"+ids);
+        LinkedList<String> nla = new LinkedList<>();
+
+
+        pularPrimeiroCaractere(la,nla);
+  
+        for(int i=0;i<la.size();i++){
+            System.out.println(la.get(i));
         }
-       // System.out.println(a.printSignificados());
+      
+        System.out.println(" digite os caracteres");
+        String ntd = in.nextLine();
+        LinkedList<String> sgn = a.bucasSignificado(a, "/"+ntd);
+       
+        //pularPrimeiroCaractere(sgn, nsgn);
+
      
-     //   System.out.println(a.count);
+
+       for(int i=0;i<sgn.size();i++){
+        System.out.println(sgn.get(i));
+       }
+
       a.geraDot("arvore.dot");
-      System.out.println(a.count);
       //varrer as 2 listas comparar as palavras e pegar o significado
-        System.out.println("Palavras com prefixo 'ab': " + wordsWithPrefix);
+
+     // System.out.println(a.printSignificados());
+       
 
     }
- 
+   public static void pularPrimeiroCaractere(LinkedList<String> lista, LinkedList<String> listaPulada) {
+        for (String str : lista) {
+            if (str.length() > 1) {
+                String strPulada = str.substring(1);
+                listaPulada.add(strPulada);
+            }
+        }
+    }
 }

@@ -6,35 +6,25 @@ import java.io.IOException;
 import java.io.PrintWriter;
 public class ArvoreGramatical{
     public int count;
-    public int ax;
+    public int ajuda;
     public class Nodo {
         public Nodo father;
         public String palavra;
         public String significado;
-        public Integer dif;
         public LinkedList<Nodo> subtree;
     
-        public Nodo(String p, Nodo pai, String sgn) {
+    
+        public Nodo(String p,String sgn) {
             palavra = p;
-            father = pai;
-            
+            father = null;
             subtree = new LinkedList<>();
             significado = sgn;
         }
     
-        public Nodo(String p) {
-            palavra = p;
-            father = null;
-            subtree = new LinkedList<>();
-            significado = null;
-            
-        }
-    
         public void addSubtree(Nodo entrada) {
             subtree.add(entrada);
-            entrada.father = this;
+            entrada.father = this; // Atualiza a referência do pai no nodo filho
         }
-    
         public int getSubtreeSize() {
             return subtree.size();
         }
@@ -66,7 +56,7 @@ public class ArvoreGramatical{
         }
 
         public boolean add(String letra,String pai){
-            Nodo aux = new Nodo(letra);
+            Nodo aux = new Nodo(letra,null);
             
             if(pai==null){
                 if(root==null){
@@ -124,8 +114,9 @@ public class ArvoreGramatical{
             return null;
         }
 
-        public void add(Palavra palavra, String pai) {
+        public void addPalavra(Palavra palavra, String pai) {
             String palavraStr = palavra.getPalavra();
+            String nrt = palavra.getSignificado();
             Nodo ref = null;
     
             // Verifica se o pai é nulo
@@ -150,7 +141,7 @@ public class ArvoreGramatical{
                 // Verifica se o caractere já existe no nodo atual
                 Nodo nodoAtual = null;
                 
-               //nodo filho é criado e se percorre a lista do nodo pai
+               // nodo filho é criado e se percorre a lista do nodo pai
                 for (Nodo filho : nodoPai.subtree) {
                     if (filho.palavra.equals(letra)) {
                         //se ele estiver pressente se adiciona o pai ao nodo
@@ -161,14 +152,12 @@ public class ArvoreGramatical{
     
                 // Se o caractere não existe, cria um novo nodo e adiciona ao nodo atual
                 if (nodoAtual == null) {
-                    nodoAtual = new Nodo(letra, nodoPai,null);
+                    nodoAtual = new Nodo(letra,null);
                     if(palavraStr.length()==i+1){
-                        nodoAtual.setSignificado(palavraStr);
+                        nodoAtual.setSignificado(nrt);
                         }
                     nodoPai.addSubtree(nodoAtual);
-                    nodoAtual.father=nodoPai;
-                    count++;
-                                
+                    count++;                   
                 }
                        
     
@@ -200,13 +189,13 @@ public class ArvoreGramatical{
                 espacos += "\t";
             }
             
-            String nomeNodo = nodo.palavra + "_" + count;
-            count++;
+            String nomeNodo = nodo.palavra + "_" + ajuda;
+            ajuda++;
             
             out.println(espacos + "\"" + nomeNodo + "\";");
             
             for (Nodo filho : nodo.subtree) {
-                out.println(espacos + "\"" + nomeNodo + "\" -> \""+ filho.palavra + "_" + count + "\";");
+                out.println(espacos + "\"" + nomeNodo + "\" -> \""+ filho.palavra + "_" + ajuda + "\";");
                 geraDotRecursivo(filho, out, nivel + 1);
             }
         }
@@ -228,38 +217,7 @@ public class ArvoreGramatical{
             }
            }
     }
-    // public LinkedList<String> procuraPalavras(String pesquisa){
-    //     LinkedList lista = new LinkedList<>();
-    //     Nodo aux = auxprocuraPalavras(pesquisa, root);
-    //     juntaSignificados(aux, lista);
-    //     return lista;
-    // }
-    // private Nodo auxprocuraPalavras(String pesquisa, Nodo aux){
-    //     for(int i =0; i<pesquisa.length();i++){
-    //         String letra = Character.toString(pesquisa.charAt(i));
 
-    //         for(Nodo filho : aux.subtree){
-    //             if(filho.getPalavra().equals(letra)){
-    //                 return auxprocuraPalavras(letra,filho);
-    //             }
-    //         }
-    //     }
-    //     return null;
-    // }
-    // private void juntaSignificados(Nodo aux, LinkedList<String> palavras){
-    //     if(aux==null){
-    //         return;
-    //     }
-
-    //     if(aux.getSignificado()!=null){
-    //         palavras.add(aux.getSignificado());
-
-    //     }
-
-    //     for(Nodo filho : aux.subtree){
-    //         juntaSignificados(aux, palavras);
-    //     }
-    // }
     public LinkedList<String> findWordsWithPrefix(String prefix) {
         LinkedList<String> words = new LinkedList<>();
         Nodo lastPrefixNode = getLastPrefixNode(prefix, root);
@@ -297,5 +255,50 @@ public class ArvoreGramatical{
             collectWordsFromNode(child, words);
         }
     }
+    public LinkedList<String> buscarPalavras(ArvoreGramatical arvore, String caracteres) {
+        LinkedList<String> palavrasEncontradas = new LinkedList<>();
+        buscarPalavrasRecursivo(arvore.root, caracteres, "", palavrasEncontradas);
+        return palavrasEncontradas;
+    }
+
+    private void buscarPalavrasRecursivo(ArvoreGramatical.Nodo nodo, String caracteres, String prefixo, LinkedList<String> palavrasEncontradas) {
+        if (nodo == null ) {
+             return;
+        }
+                
+    // Verifica se o prefixo atual mais a letra do nodo forma a sequência de caracteres desejada
+        String novaPalavra = prefixo + nodo.palavra;
+          if (novaPalavra.startsWith(caracteres)&&nodo.significado!=null) {
+                palavrasEncontradas.add(novaPalavra);
+            }
+                
+                // Percorre os nodos filhos
+                for (ArvoreGramatical.Nodo filho : nodo.subtree) {
+                    buscarPalavrasRecursivo(filho, caracteres, novaPalavra, palavrasEncontradas);
+                }
+            }
+      public LinkedList<String> bucasSignificado(ArvoreGramatical arvore, String caracteres) {
+        LinkedList<String> palavrasEncontradas = new LinkedList<>();
+        bucasSignificadoRecursivo(arvore.root, caracteres, "", palavrasEncontradas);
+        return palavrasEncontradas;
+    }
+
+   private void bucasSignificadoRecursivo(ArvoreGramatical.Nodo nodo, String caracteres, String prefixo, LinkedList<String> palavrasEncontradas) {
+    if (nodo == null ) {
+         return;
+    }
+            
+    // Verifica se o prefixo atual mais a letra do nodo forma a sequência de caracteres desejada
+    String novaPalavra = prefixo + nodo.palavra;
+    String significado = nodo.getSignificado();
     
+    if (novaPalavra.startsWith(caracteres) && significado != null) {
+        palavrasEncontradas.add(significado);
+    }
+    
+    // Percorre os nodos filhos
+    for (ArvoreGramatical.Nodo filho : nodo.subtree) {
+        bucasSignificadoRecursivo(filho, caracteres, novaPalavra, palavrasEncontradas);
+    }
+}        
 }
