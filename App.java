@@ -55,14 +55,13 @@ public class App {
         System.out.println(" digite os caracteres");
         String ntd = in.nextLine();
         LinkedList<String> sgn = a.bucasSignificado(a, "/"+ntd);
-        LinkedList<String> nsgn = new LinkedList<>();
+       
+        //pularPrimeiroCaractere(sgn, nsgn);
 
-        pularPrimeiroCaractere(sgn, nsgn);
+     
 
-       System.out.println(nsgn.size());
-
-       for(int i=0;i<nsgn.size();i++){
-        System.out.println(nsgn.get(i));
+       for(int i=0;i<sgn.size();i++){
+        System.out.println(sgn.get(i));
        }
 
       a.geraDot("arvore.dot");
