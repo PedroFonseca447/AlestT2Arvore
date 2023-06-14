@@ -47,7 +47,7 @@ public class App {
         //assim posso isolar so as palavras e os significados nao ficando tudo
         //junto e misturado
 
-        LinkedList<String> la = a.buscarPalavras("/"+ids);
+        LinkedList<String> la = a.buscarPalavras("/"+ids.toLowerCase());
         LinkedList<String> nla = new LinkedList<>();
 
 
@@ -57,15 +57,15 @@ public class App {
             System.out.println(nla.get(i));
         }
       
-        System.out.println(" digite os caracteres");
+        System.out.println(" Digite agora a palavra que você quer o significado, presente na lista ");
         String ntd = in.nextLine();
-        LinkedList<String> sgn = a.bucasSignificado( "/"+ntd);
+        LinkedList<String> sgn = a.bucasSignificado( "/"+ntd.toLowerCase());
        
         //pularPrimeiroCaractere(sgn, nsgn);
 
      
 
-       for(int i=0;i<sgn.size();i++){
+       for(int i=0;i<1;i++){
         System.out.println(sgn.get(i));
        }
 
@@ -76,6 +76,9 @@ public class App {
        
 
     }
+    //método criado para pular o "/" no fim ele acabou não sendo mais usado;
+    //porém deixei ele ali caso tivesse de imprimir ou interagir com o lista
+    //de palavras para saber se a árvore estava sendo preenchida de forma certa
    public static void pularPrimeiroCaractere(LinkedList<String> lista, LinkedList<String> listaPulada) {
         for (String str : lista) {
             if (str.length() > 1) {

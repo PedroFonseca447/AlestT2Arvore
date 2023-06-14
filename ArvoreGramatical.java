@@ -1,11 +1,11 @@
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Set;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 public class ArvoreGramatical{
+    //count pra arvore
     public int count;
+    //count para o método Dot
     public int ajuda;
     //Nodo que armazena os caracteres da palavra
     //Em caso de ser o último caracter, ele armazena o significado da palavra
@@ -194,13 +194,9 @@ public class ArvoreGramatical{
             }
 }
      
-        // Nesta implementação, o número do nível é concatenado ao nome do nodo, separado por um underscore (_). Isso garante que cada nodo tenha um nome único com base no seu valor e no seu nível.
-
-        // Ao imprimir o nodo no formato DOT, o nome do nodo é atualizado para incluir o número do nível correspondente. Além disso, ao criar uma aresta para o filho, o nome do nodo do filho também é atualizado com o número do próximo nível.
-
-        // Dessa forma, cada nodo terá um nome exclusivo com base no seu valor e no seu nível correspondente, criando a distinção visual entre os nodos em diferentes níveis da árvore no arquivo DOT gerado.
-
-        // Por exemplo, para a palavra "correr", o primeiro "r" será do terceiro nível e o segundo "r" será do quarto nível, como você mencionou.
+       //O gera dot foi feito baseado no que vi no material somado a consultas para entendr o formato do arquivo, realmente é meio confuso a fora como ele funciona,
+       //nesse caso ele só passou a printar da forma certa quando se implementou nível + numeração para diferenciar cada nodo na hora da impressão de uma palavra
+       //no arvore.dot da para ver como esta feito o dicionario
        
         public void geraDot(String nomeArquivo) {
             try (PrintWriter out = new PrintWriter(new FileWriter(nomeArquivo))) {
@@ -229,9 +225,9 @@ public class ArvoreGramatical{
             }
         }
 
-        //esse método é outro que no final não está sendo utilizado para compor os métodos finais principais porém,
+        //Esse método é outro que no final não está sendo utilizado para compor os métodos finais principais porém,
         //ele serve como uma forma de entender como estava sendo preenchido o slot de significado, imprimindo no geral uma lista
-        //de null com exceção de a letra final possuir todo o significado da palavra.
+        //de null com exceção de a letra final que possui todo o significado da palavra.
            
     public LinkedList<String> printSignificados() throws Exception {
        LinkedList<String> lista = new LinkedList<>();
