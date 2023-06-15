@@ -79,6 +79,17 @@ public class App {
     //método criado para pular o "/" no fim ele acabou não sendo mais usado;
     //porém deixei ele ali caso tivesse de imprimir ou interagir com o lista
     //de palavras para saber se a árvore estava sendo preenchida de forma certa
+
+    /** 
+     * // O método bucasSignificado recebe os caracteres da consulta do usuário, e usando o caminhamento prévio
+       //percorre a lista juntando as possiveis palavras que serão formadas. Nesse caso, ele não necessita de retornar uma lista já que é necessário,
+       //apenas um único significado referenciado por quem está solicitando.
+       //o significado fica armazenado no fim das palavras no último nodo delas.
+       @param lista quando eu usava pra formar a palavra das arvores, elas acabavam vindo com uma / de primeiro caracter, nesse método da para pular ele
+       @param listaPulada a nova lista que recebera os elementos da lista anterior, com o primeiro caracter eliminado
+     * Retorna uma lista com o significado da palavra procurada.
+     * @return lista com os elementos da arvore na ordem do caminhamento pre-fixado
+     */  
    public static void pularPrimeiroCaractere(LinkedList<String> lista, LinkedList<String> listaPulada) {
         for (String str : lista) {
             if (str.length() > 1) {
