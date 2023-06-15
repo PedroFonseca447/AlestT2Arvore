@@ -177,6 +177,8 @@ public class ArvoreGramatical{
                 String letra = Character.toString(palavraStr.charAt(i));
     
                 // Verifica se o caractere já existe no nodo atual
+             //nodo atual é criado para percorrer a subArvore do nodo pai e para cada filho
+             //verificar se a sua letra é igual a atual;
                 Nodo nodoAtual = null;
                 
                // nodo filho é criado e se percorre a lista do nodo pai
@@ -191,6 +193,9 @@ public class ArvoreGramatical{
                 // Se o caractere não existe, cria um novo nodo e adiciona ao nodo atual
                 if (nodoAtual == null) {
                     nodoAtual = new Nodo(letra,null);
+                 //aqui funciona para caso no for seja indicado a ultima letra
+                 //se adiciona o signnificado da palavra, assim mostrando
+                 //qual é o ultimo nodo
                     if(palavraStr.length()==i+1){
                         nodoAtual.setSignificado(nrt);
                         }
